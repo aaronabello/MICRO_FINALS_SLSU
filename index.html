@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complete Chapter 9 Reviewer - 8086/8088</title><style>
+:root{--bg:#f6f8fc;--card:#fff;--text:#172033;--muted:#5c6b82;--border:#d9e2ef;--accent:#2563eb;--soft:#eaf1ff;--shadow:0 14px 35px rgba(15,23,42,.08);--warn:#fff7ed}
+[data-theme=dark]{--bg:#0f172a;--card:#111827;--text:#e5e7eb;--muted:#94a3b8;--border:#263244;--accent:#60a5fa;--soft:#172554;--shadow:0 14px 35px rgba(0,0,0,.25);--warn:#2a1b08}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.7}a{color:inherit;text-decoration:none}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.top-inner{max-width:1180px;margin:auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;gap:12px;align-items:center}.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--accent),#7c3aed);color:white;display:grid;place-items:center;font-weight:900}
+h1{font-size:1rem;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font-size:.86rem}
+button,.btn,select,input{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:999px;padding:10px 14px;font-weight:700}button,.btn,select{cursor:pointer}button.primary,.btn.primary{background:var(--accent);color:white;border-color:var(--accent)}
+.hero{max-width:1180px;margin:auto;padding:34px 18px 18px;display:grid;grid-template-columns:1.5fr .5fr;gap:16px}.hero-card,.card,.stat{background:var(--card);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow)}.hero-card{padding:30px}.eyebrow{display:inline-block;background:var(--soft);color:var(--accent);font-weight:900;text-transform:uppercase;letter-spacing:.08em;border-radius:999px;padding:7px 12px;font-size:.8rem}
+h2{line-height:1.2;letter-spacing:-.02em}.hero h2{font-size:clamp(2rem,5vw,4rem);margin:15px 0}.hero p,.card p,.card li,.card td{color:var(--muted)}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.stats{display:grid;gap:12px}.stat{padding:18px}.stat strong{display:block;font-size:2rem;color:var(--accent)}
+.layout{max-width:1180px;margin:auto;padding:10px 18px 45px;display:grid;grid-template-columns:270px 1fr;gap:18px}aside{position:sticky;top:84px;align-self:start;max-height:calc(100vh - 100px);overflow:auto;padding:14px}.nav a{display:block;color:var(--muted);padding:9px 12px;border-radius:12px}.nav a:hover{background:var(--soft);color:var(--text)}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}.tab.active{background:var(--accent);color:white}.card{padding:24px;margin-bottom:18px;scroll-margin-top:92px}.note,.memory,.warning,.formula{border:1px solid var(--border);border-radius:16px;padding:13px 15px;margin:14px 0}.note,.memory{background:var(--soft)}.memory{font-weight:800}.warning{background:var(--warn)}.formula{font-family:Consolas,monospace;font-weight:800;background:color-mix(in srgb,var(--card) 80%,var(--soft));overflow:auto}
+table{width:100%;border-collapse:collapse;margin:14px 0 20px;font-size:.93rem}th,td{border:1px solid var(--border);padding:10px 12px;vertical-align:top}th{background:var(--soft);text-align:left}
+.searchbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}.searchbar input{flex:1 1 260px;border-radius:14px;font-weight:400}.hidden{display:none!important}.flashcard{min-height:310px;display:grid;place-items:center;text-align:center;cursor:pointer}.flash-label{color:var(--accent);font-weight:900;text-transform:uppercase;letter-spacing:.1em;font-size:.8rem}.flash-text{font-size:clamp(1.2rem,3vw,1.75rem);font-weight:900;white-space:pre-line;line-height:1.45}.flash-tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}.progress{height:10px;background:var(--soft);border:1px solid var(--border);border-radius:999px;overflow:hidden;margin:10px 0 15px}.fill{height:100%;width:0;background:var(--accent)}details summary{cursor:pointer;font-weight:900}mark{background:#fde68a;color:#111827;border-radius:4px;padding:0 2px}footer{text-align:center;color:var(--muted);padding:25px}
+@media(max-width:900px){.hero,.layout{grid-template-columns:1fr}aside{position:static;max-height:none}.nav{display:grid;grid-template-columns:repeat(2,1fr);gap:4px}}@media(max-width:620px){.hero-card,.card{padding:18px}table{display:block;overflow-x:auto;white-space:nowrap}.nav{grid-template-columns:1fr}}@media print{.top,aside,.tabs,.searchbar,.flash-tools,footer{display:none!important}body{background:white;color:black}.layout,.hero{display:block;max-width:none}.card,.hero-card{box-shadow:none;border:1px solid #bbb;page-break-inside:avoid}}
+</style></head>
+<body data-theme="light">
+<header class="top"><div class="top-inner"><div class="brand"><div class="logo">C9</div><div><h1>Complete Chapter 9 Reviewer</h1><p>8086/8088 Hardware Specifications — Transes + Flashcards + Self-Test</p></div></div><div><button id="themeBtn" class="primary">Dark Mode</button> <button onclick="window.print()">Print / Save PDF</button></div></div></header>
+<section class="hero"><div class="hero-card"><span class="eyebrow">Offline HTML file</span><h2>8086/8088 Hardware Specifications</h2><p>This file contains Chapter 9 transes, flashcards, formulas, tables, and self-test questions based on your uploaded PDF.</p><div class="hero-actions"><a href="#overview" class="btn primary">Start Transes</a><a href="#flashcards" class="btn">Flashcards</a><a href="#quiz" class="btn">Self-Test</a></div></div><div class="stats"><div class="stat"><strong>7</strong>Transes sections</div><div class="stat"><strong>215</strong>Flashcards</div><div class="stat"><strong>39</strong>Self-test questions</div></div></section>
+<div class="layout"><aside class="card"><div class="nav"><a href="#overview">Overview</a><a href="#pinouts">9-1 Pin-Outs</a><a href="#clock">9-2 8284A</a><a href="#bus">9-3 Bus</a><a href="#timing">9-4 Timing</a><a href="#ready">9-5 READY</a><a href="#modes">9-6 Modes</a><a href="#quick">Quick Review</a><a href="#flashcards">Flashcards</a><a href="#quiz">Self-Test</a></div></aside><main>
+<div class="tabs"><button class="tab active" data-view="transesView">Transes</button><button class="tab" data-view="flashView">Flashcards</button><button class="tab" data-view="quizView">Self-Test</button></div>
+<div id="transesView" class="view"><div class="searchbar"><input id="searchInput" type="search" placeholder="Search transes: READY, BHE, 8284A, timing..."><button id="clearSearch">Clear</button></div><section id="overview" class="card searchable"><h2>Chapter 9 Overview</h2>
+<p><strong>Chapter 9 explains the hardware side of the 8086 and 8088 microprocessors.</strong> It covers pin functions, DC characteristics, clock generation, bus buffering, bus latching, timing, wait states, minimum mode, maximum mode, and the 8288 bus controller.</p>
+<p>Before connecting memory, I/O, buffers, latches, or coprocessors to the 8086/8088, you must understand the pin functions and bus timing.</p>
+<div class="note"><strong>Study flow:</strong> Pins → DC characteristics → 8284A clock generator → demultiplexing/buffering → bus timing → READY/wait states → minimum/maximum mode → 8288 bus controller.</div>
+<h3>Chapter Objectives</h3>
+<ol>
+<li>Describe each 8086 and 8088 pin.</li>
+<li>Understand DC characteristics and fan-out.</li>
+<li>Use the 8284A clock generator.</li>
+<li>Connect buffers and latches to buses.</li>
+<li>Interpret timing diagrams.</li>
+<li>Describe wait states and related circuitry.</li>
+<li>Differentiate minimum and maximum mode.</li>
+</ol>
+</section>
+<section id="pinouts" class="card searchable"><h2>9-1 Pin-Outs and Pin Functions</h2>
+<h3>8086 vs 8088</h3>
+<p>Both are 16-bit microprocessors in 40-pin DIP packages. Their main difference is external data bus width.</p>
+<table><tr><th>Feature</th><th>8086</th><th>8088</th></tr>
+<tr><td>External data bus</td><td>16-bit</td><td>8-bit</td></tr>
+<tr><td>Address/data pins</td><td>AD0–AD15</td><td>AD0–AD7</td></tr>
+<tr><td>Pin 34</td><td>BHE/S7</td><td>SS0</td></tr>
+<tr><td>Memory/I/O signal</td><td>M/IO</td><td>IO/M</td></tr>
+<tr><td>Efficiency</td><td>More efficient for 16-bit transfers</td><td>Uses 8-bit external path</td></tr>
+</table>
+<div class="memory">Memory hook: 8086 = 16-bit bus, 8088 = 8-bit bus.</div>
+<h3>Power Supply</h3>
+<table><tr><th>Item</th><th>Value</th></tr>
+<tr><td>Supply voltage</td><td>+5.0 V ±10%</td></tr>
+<tr><td>8086 max current</td><td>360 mA</td></tr>
+<tr><td>8088 max current</td><td>340 mA</td></tr>
+<tr><td>Standard temperature range</td><td>32°F to 180°F</td></tr>
+<tr><td>CMOS versions</td><td>80C86 and 80C88</td></tr>
+<tr><td>CMOS current</td><td>About 10 mA</td></tr>
+<tr><td>CMOS temperature range</td><td>-40°F to +225°F</td></tr>
+</table>
+<h3>DC Characteristics</h3>
+<table><tr><th>Input Logic</th><th>Voltage</th><th>Current</th></tr>
+<tr><td>0</td><td>0.8 V maximum</td><td>±10 µA maximum</td></tr>
+<tr><td>1</td><td>2.0 V minimum</td><td>±10 µA maximum</td></tr></table>
+<table><tr><th>Output Logic</th><th>Voltage</th><th>Current</th></tr>
+<tr><td>0</td><td>0.45 V maximum</td><td>2.0 mA maximum</td></tr>
+<tr><td>1</td><td>2.4 V minimum</td><td>-400 µA maximum</td></tr></table>
+<p>Logic 0 output can be 0.45 V instead of the standard 0.4 V, reducing noise immunity to 350 mV.</p>
+<div class="formula">Noise immunity = 0.8 V - 0.45 V = 0.35 V = 350 mV</div>
+<h3>Recommended Fan-Out</h3>
+<table><tr><th>Family</th><th>Fan-out</th></tr>
+<tr><td>TTL 74</td><td>1</td></tr><tr><td>TTL 74LS</td><td>5</td></tr><tr><td>TTL 74S</td><td>1</td></tr><tr><td>TTL 74ALS</td><td>10</td></tr><tr><td>TTL 74AS</td><td>10</td></tr><tr><td>TTL 74F</td><td>10</td></tr><tr><td>CMOS 74HC</td><td>10</td></tr><tr><td>CMOS CD</td><td>10</td></tr><tr><td>NMOS</td><td>10</td></tr></table>
+<div class="warning">Use buffers if more than 10 unit loads are needed. Recommended logic families include LS, 74ALS, and 74HC.</div>
+<h3>Important Pins</h3>
+<table><tr><th>Pin/Signal</th><th>Function</th></tr>
+<tr><td>AD7–AD0</td><td>8088 multiplexed address/data lines. ALE=1 means address/I/O port bits; ALE=0 means data. High-impedance during hold acknowledge.</td></tr>
+<tr><td>A15–A8</td><td>8088 upper address bits, present throughout bus cycle. High-impedance during hold acknowledge.</td></tr>
+<tr><td>AD15–AD8</td><td>8086 upper multiplexed address/data bus. ALE=1 gives A15–A8; ALE=0 gives D15–D8.</td></tr>
+<tr><td>A19/S6–A16/S3</td><td>Address/status pins. Provide A19–A16 and S6–S3. High-impedance during hold acknowledge.</td></tr>
+<tr><td>S6</td><td>Always logic 0.</td></tr><tr><td>S5</td><td>Indicates IF flag condition.</td></tr>
+<tr><td>S4/S3</td><td>Indicate segment being accessed; may be decoded as A21/A20 for four 1 MB banks.</td></tr>
+<tr><td>RD</td><td>Read signal. RD=0 means data bus receives data from memory/I/O. Floats during hold acknowledge.</td></tr>
+<tr><td>READY</td><td>Controls wait states. 0=wait, 1=normal.</td></tr>
+<tr><td>INTR</td><td>Maskable interrupt request. Works if IF=1.</td></tr>
+<tr><td>TEST</td><td>Used by WAIT. TEST=0 makes WAIT act like NOP; TEST=1 makes WAIT wait until TEST becomes 0.</td></tr>
+<tr><td>NMI</td><td>Non-maskable interrupt. Does not check IF; uses vector 2.</td></tr>
+<tr><td>RESET</td><td>Held high for at least four clocks. Starts execution at FFFF0H and clears IF.</td></tr>
+<tr><td>CLK</td><td>Basic timing signal, 33% duty cycle.</td></tr>
+<tr><td>VCC/GND</td><td>+5 V power and ground. Both GND pins must be connected.</td></tr>
+<tr><td>MN/MX</td><td>+5 V = minimum mode; ground = maximum mode. Direct connection required in minimum mode.</td></tr>
+<tr><td>BHE/S7</td><td>8086 bus high enable for D15–D8; S7 always logic 1.</td></tr>
+</table>
+<h3>S4/S3 Segment Table</h3>
+<table><tr><th>S4</th><th>S3</th><th>Segment</th></tr><tr><td>0</td><td>0</td><td>Extra</td></tr><tr><td>0</td><td>1</td><td>Stack</td></tr><tr><td>1</td><td>0</td><td>Code or no segment</td></tr><tr><td>1</td><td>1</td><td>Data</td></tr></table>
+<h3>Minimum Mode Pins</h3>
+<table><tr><th>Pin</th><th>Function</th></tr>
+<tr><td>IO/M or M/IO</td><td>Selects memory or I/O.</td></tr><tr><td>WR</td><td>Write strobe. WR=0 means valid data output to memory/I/O. Floats during hold acknowledge.</td></tr><tr><td>INTA</td><td>Interrupt acknowledge.</td></tr><tr><td>ALE</td><td>Address latch enable; does not float during hold acknowledge.</td></tr><tr><td>DT/R</td><td>Data transmit/receive. 1=transmit, 0=receive.</td></tr><tr><td>DEN</td><td>Data bus enable.</td></tr><tr><td>HOLD</td><td>DMA request; stops CPU and places buses in high-impedance.</td></tr><tr><td>HLDA</td><td>Hold acknowledge.</td></tr><tr><td>SS0</td><td>Equivalent to S0 in maximum mode.</td></tr></table>
+<h3>Minimum-Mode Bus Cycle Status</h3>
+<table><tr><th>IO/M</th><th>DT/R</th><th>SS0</th><th>Function</th></tr><tr><td>0</td><td>0</td><td>0</td><td>Interrupt acknowledge</td></tr><tr><td>0</td><td>0</td><td>1</td><td>Memory read</td></tr><tr><td>0</td><td>1</td><td>0</td><td>Memory write</td></tr><tr><td>0</td><td>1</td><td>1</td><td>Halt</td></tr><tr><td>1</td><td>0</td><td>0</td><td>Opcode fetch</td></tr><tr><td>1</td><td>0</td><td>1</td><td>I/O read</td></tr><tr><td>1</td><td>1</td><td>0</td><td>I/O write</td></tr><tr><td>1</td><td>1</td><td>1</td><td>Passive</td></tr></table>
+<h3>Maximum Mode Pins and Tables</h3>
+<table><tr><th>Pin</th><th>Function</th></tr><tr><td>S2/S1/S0</td><td>Status bits decoded by 8288.</td></tr><tr><td>RQ/GT0, RQ/GT1</td><td>Bidirectional request/grant DMA pins.</td></tr><tr><td>LOCK</td><td>Locks peripherals off system using LOCK prefix.</td></tr><tr><td>QS1/QS0</td><td>Instruction queue status bits.</td></tr></table>
+<table><tr><th>S2</th><th>S1</th><th>S0</th><th>Function</th></tr><tr><td>0</td><td>0</td><td>0</td><td>Interrupt acknowledge</td></tr><tr><td>0</td><td>0</td><td>1</td><td>I/O read</td></tr><tr><td>0</td><td>1</td><td>0</td><td>I/O write</td></tr><tr><td>0</td><td>1</td><td>1</td><td>Halt</td></tr><tr><td>1</td><td>0</td><td>0</td><td>Opcode fetch</td></tr><tr><td>1</td><td>0</td><td>1</td><td>Memory read</td></tr><tr><td>1</td><td>1</td><td>0</td><td>Memory write</td></tr><tr><td>1</td><td>1</td><td>1</td><td>Passive</td></tr></table>
+<table><tr><th>QS1</th><th>QS0</th><th>Function</th></tr><tr><td>0</td><td>0</td><td>Queue idle</td></tr><tr><td>0</td><td>1</td><td>First byte of opcode</td></tr><tr><td>1</td><td>0</td><td>Queue empty</td></tr><tr><td>1</td><td>1</td><td>Subsequent byte of opcode</td></tr></table>
+</section>
+<section id="clock" class="card searchable"><h2>9-2 Clock Generator: 8284A</h2>
+<div class="note">Figures 9-2 to 9-4 cover 8284A pin-out, internal block diagram, and connection to 8086/8088.</div>
+<p>The 8284A provides clock generation, RESET synchronization, READY synchronization, and a TTL-level peripheral clock.</p>
+<table><tr><th>Pin</th><th>Function</th></tr>
+<tr><td>AEN1/AEN2</td><td>Qualify RDY1/RDY2 respectively.</td></tr><tr><td>RDY1/RDY2</td><td>Bus ready inputs used to cause wait states.</td></tr><tr><td>ASYNC</td><td>1=one synchronization stage, 0=two stages.</td></tr><tr><td>READY</td><td>Output to CPU READY input.</td></tr><tr><td>X1/X2</td><td>External crystal connections.</td></tr><tr><td>F/C</td><td>0=crystal oscillator, 1=EFI external frequency.</td></tr><tr><td>EFI</td><td>External frequency input.</td></tr><tr><td>CLK</td><td>Output to CPU; frequency ÷3; 33% duty.</td></tr><tr><td>PCLK</td><td>Peripheral clock; frequency ÷6; 50% duty.</td></tr><tr><td>OSC</td><td>TTL-level output at same frequency as crystal/EFI.</td></tr><tr><td>RES</td><td>Active-low reset input.</td></tr><tr><td>RESET</td><td>Output to CPU RESET.</td></tr><tr><td>CSYNC</td><td>Clock synchronization; ground when crystal is used.</td></tr><tr><td>GND/VCC</td><td>Ground and +5 V ±10%.</td></tr>
+</table>
+<h3>Clock Section Operation</h3>
+<ol><li>Crystal on X1/X2 creates square wave.</li><li>Signal goes to AND gate and inverting buffer.</li><li>Buffer produces OSC.</li><li>F/C=0 sends oscillator to divide-by-3 counter.</li><li>F/C=1 sends EFI to the counter.</li><li>Divide-by-3 creates CLK and timing for READY synchronization.</li><li>Divide-by-3 plus divide-by-2 creates divide-by-6 PCLK.</li></ol>
+<div class="formula">OSC = crystal or EFI frequency</div><div class="formula">CLK = crystal or EFI ÷ 3</div><div class="formula">PCLK = crystal or EFI ÷ 6</div>
+<table><tr><th>Crystal</th><th>OSC</th><th>CLK</th><th>PCLK</th></tr><tr><td>15 MHz</td><td>15 MHz</td><td>5 MHz</td><td>2.5 MHz</td></tr><tr><td>14 MHz</td><td>14 MHz</td><td>4.67 MHz</td><td>2.33 MHz</td></tr></table>
+<h3>Reset Section</h3>
+<p>The reset section uses a Schmitt trigger buffer and D-type flip-flop. RESET is applied on the negative clock edge; CPU samples RESET on the positive clock edge. RC circuit gives power-on reset; pushbutton allows manual reset.</p>
+<ul><li>RESET must become logic 1 no later than four clocks after power is applied.</li><li>RESET must be held high at least 50 µs.</li><li>CPU starts at FFFF0H and clears IF.</li></ul>
+</section>
+<section id="bus" class="card searchable"><h2>9-3 Bus Buffering and Latching</h2>
+<div class="note">Figures 9-5 to 9-8 show demultiplexed and fully buffered 8088/8086 systems.</div>
+<p>The 8086/8088 buses are multiplexed to reduce pins. Memory and I/O require stable addresses, so demultiplexing is required.</p>
+<table><tr><th>Bus</th><th>Purpose</th></tr><tr><td>Address</td><td>Memory address or I/O port number</td></tr><tr><td>Data</td><td>Data transfer between CPU, memory, and I/O</td></tr><tr><td>Control</td><td>Read/write/control signals</td></tr></table>
+<h3>Demultiplexing</h3>
+<ul><li>8088: uses two 74LS373/74LS573 latches for AD7–AD0 and A19/S6–A16/S3.</li><li>8086: uses three 74LS373 latches for AD15–AD0, A19/S6–A16/S3, and BHE/S7.</li><li>ALE=1 makes transparent latch pass inputs; ALE=0 stores the address.</li><li>8088 result: A19–A0 address bus and D7–D0 data bus.</li><li>8086 result: A19–A0 plus BHE, D15–D0, and control bus M/IO, RD, WR.</li><li>20 address bits allow 1 MB memory addressing.</li></ul>
+<h3>Buffering</h3>
+<p>If more than 10 unit loads are connected to a bus pin, buffering is required. Buffers also drive high-capacitance buses.</p>
+<table><tr><th>Buffered Output</th><th>Drive</th></tr><tr><td>Logic 0</td><td>Up to 32 mA sink current</td></tr><tr><td>Logic 1</td><td>Up to 5.2 mA source current</td></tr></table>
+<div class="warning">Full buffering adds timing delay, important when memory/I/O operates near maximum bus speed.</div>
+<table><tr><th>System</th><th>Components</th></tr><tr><td>Fully buffered 8088</td><td>Two 74LS244, one 74LS245, two 74LS373</td></tr><tr><td>Fully buffered 8086</td><td>One 74LS244, two 74LS245, three 74LS373</td></tr></table>
+<p>74LS245 direction is controlled by DT/R and enabled by DEN.</p>
+</section>
+<section id="timing" class="card searchable"><h2>9-4 Bus Timing</h2>
+<div class="note">Figures 9-9 to 9-13 show write/read bus cycles, read timing, AC characteristics, and write timing.</div>
+<p>Bus timing determines if memory and I/O devices are fast enough.</p>
+<h3>Read and Write</h3>
+<ul><li>Write: CPU outputs address, outputs data, and activates WR.</li><li>Read: CPU outputs address, activates RD, and accepts data on data bus.</li></ul>
+<h3>T States</h3>
+<table><tr><th>State</th><th>Purpose</th></tr><tr><td>T1</td><td>Address is sent; ALE, DT/R, IO/M or M/IO output.</td></tr><tr><td>T2</td><td>RD or WR issued; DEN activated; READY sampled at end.</td></tr><tr><td>T3</td><td>Memory access; read data sampled at end.</td></tr><tr><td>T4</td><td>Signals deactivated; write completes at trailing WR edge.</td></tr><tr><td>Tw</td><td>Wait state between T2 and T3.</td></tr></table>
+<div class="formula">One bus cycle = 4 T states</div><div class="formula">At 5 MHz: clock period = 200 ns, bus cycle = 800 ns</div><div class="formula">Transfer rate = 1 / 800 ns = 1.25 million transfers/sec</div>
+<p>At 5 MHz, the internal queue allows about 2.5 MIPS in bursts. At 10 MHz, about 5 MIPS in bursts.</p>
+<h3>Memory Access Time</h3>
+<div class="formula">Access time = 600 ns - 110 ns - 30 ns = 460 ns</div>
+<p>With decoder and buffer delay, practical memory should be about 420 ns or faster. RD strobe width is 325 ns at 5 MHz.</p>
+<h3>Write Timing</h3>
+<table><tr><th>Item</th><th>Value at 5 MHz</th></tr><tr><td>Data hold after WR, TWHDX</td><td>88 ns</td></tr><tr><td>WR strobe width, TWLWH</td><td>340 ns</td></tr></table>
+<div class="formula">If CLK = 4 MHz: clock period = 250 ns; bus cycle = 1 µs</div>
+</section>
+<section id="ready" class="card searchable"><h2>9-5 READY and the Wait State</h2>
+<div class="note">Figures 9-14 to 9-18 show READY timing, RDY timing, 8284A synchronization, and wait-state generator.</div>
+<p>READY inserts wait states for slow memory/I/O. A wait state, Tw, is inserted between T2 and T3.</p>
+<div class="formula">At 5 MHz: one wait adds 200 ns</div><div class="formula">460 ns + 200 ns = 660 ns with one wait state</div>
+<ul><li>READY sampled at end of T2.</li><li>If READY=0, Tw is inserted.</li><li>READY sampled again in middle of Tw.</li><li>If READY becomes 1, cycle continues to T3.</li><li>If READY is grounded, waits continue.</li></ul>
+<h3>8284A RDY Synchronization</h3>
+<ul><li>RDY1 AND AEN1.</li><li>RDY2 AND AEN2.</li><li>Outputs are ORed, then synchronized.</li><li>AEN1 and RDY1 must both be logic 1 for that ready path.</li><li>ASYNC=1: one stage. ASYNC=0: two stages.</li></ul>
+<h3>Wait-State Generator</h3>
+<p>A 74LS164 8-bit serial shift register can generate 0 to 7 wait states. QB gives one wait; QC gives two waits. It shifts first on the positive edge of T2 and only generates waits for selected memory needing waits.</p>
+</section>
+<section id="modes" class="card searchable"><h2>9-6 Minimum Mode Versus Maximum Mode</h2>
+<div class="note">Figures 9-19 to 9-21 show minimum mode system, maximum mode system, and 8288 bus controller.</div>
+<table><tr><th>MN/MX</th><th>Mode</th></tr><tr><td>+5 V</td><td>Minimum mode</td></tr><tr><td>Ground</td><td>Maximum mode</td></tr></table>
+<h3>Minimum Mode</h3>
+<p>Least expensive. CPU generates all memory/I/O control signals. Similar to Intel 8085A and allows 8085A 8-bit peripherals without special considerations.</p>
+<h3>Maximum Mode</h3>
+<p>Used with external coprocessors such as 8087. Some control signals must be generated externally by the 8288 bus controller. Maximum mode was dropped starting with 80286.</p>
+<table><tr><th>Feature</th><th>Minimum</th><th>Maximum</th></tr><tr><td>Cost</td><td>Lower</td><td>Higher</td></tr><tr><td>Control</td><td>CPU</td><td>8288</td></tr><tr><td>Use</td><td>Simple systems</td><td>Coprocessor systems</td></tr><tr><td>8288</td><td>No</td><td>Yes</td></tr></table>
+<h3>8288 Bus Controller</h3>
+<p>The 8288 decodes S2, S1, S0 and generates memory/I/O control signals removed in maximum mode.</p>
+<table><tr><th>Signal/Pin</th><th>Function</th></tr><tr><td>S2/S1/S0</td><td>Status inputs decoded by 8288</td></tr><tr><td>CLK</td><td>Connected to 8284A CLK</td></tr><tr><td>ALE</td><td>Address latch enable output</td></tr><tr><td>DEN</td><td>Active-high data bus enable</td></tr><tr><td>DT/R</td><td>Controls bidirectional buffer direction</td></tr><tr><td>AEN</td><td>Enables memory control signals</td></tr><tr><td>CEN</td><td>Enables command outputs</td></tr><tr><td>IOB</td><td>Selects I/O bus or system bus mode</td></tr><tr><td>IORC</td><td>I/O read command</td></tr><tr><td>IOWC</td><td>I/O write command</td></tr><tr><td>MRDC</td><td>Memory read command</td></tr><tr><td>MWTC</td><td>Memory write command</td></tr><tr><td>AIOWC</td><td>Advanced I/O write</td></tr><tr><td>AMWC</td><td>Advanced memory write</td></tr><tr><td>INTA</td><td>Interrupt acknowledge</td></tr><tr><td>MCE/PDEN</td><td>Cascade operation if IOB grounded; enables I/O bus transceivers if IOB high</td></tr></table>
+</section><section id="quick" class="card searchable"><h2>Quick Review</h2>
+<h3>Chapter 9 Quick Summary</h3>
+<ol>
+<li>8086 has 16-bit data bus; 8088 has 8-bit data bus.</li>
+<li>Both require +5 V ±10%.</li>
+<li>Noise immunity is derated to 350 mV.</li>
+<li>Direct fan-out is limited to about 10 unit loads.</li>
+<li>8284A provides clock generation, RESET synchronization, READY synchronization, and PCLK.</li>
+<li>15 MHz crystal gives 5 MHz CLK and 2.5 MHz PCLK.</li>
+<li>Reset starts execution at FFFF0H and clears IF.</li>
+<li>Multiplexed buses must be demultiplexed using ALE-controlled latches.</li>
+<li>Large systems need buffers.</li>
+<li>One bus cycle has T1, T2, T3, T4.</li>
+<li>READY low inserts Tw between T2 and T3.</li>
+<li>Minimum mode is simple and cheaper; maximum mode is for coprocessors and uses 8288.</li>
+</ol>
+<h3>Must-Memorize Numbers</h3>
+<table><tr><th>Item</th><th>Value</th></tr>
+<tr><td>8086 data bus</td><td>16-bit</td></tr><tr><td>8088 data bus</td><td>8-bit</td></tr><tr><td>Power</td><td>+5 V ±10%</td></tr><tr><td>8086 current</td><td>360 mA</td></tr><tr><td>8088 current</td><td>340 mA</td></tr><tr><td>Noise immunity</td><td>350 mV</td></tr><tr><td>Fan-out limit</td><td>10 unit loads</td></tr><tr><td>CLK duty cycle</td><td>33%</td></tr><tr><td>Reset start address</td><td>FFFF0H</td></tr><tr><td>CLK</td><td>Crystal ÷ 3</td></tr><tr><td>PCLK</td><td>Crystal ÷ 6</td></tr><tr><td>5 MHz clock period</td><td>200 ns</td></tr><tr><td>5 MHz bus cycle</td><td>800 ns</td></tr><tr><td>Memory access time</td><td>460 ns</td></tr><tr><td>Recommended memory speed</td><td>420 ns or faster</td></tr><tr><td>RD width</td><td>325 ns</td></tr><tr><td>WR width</td><td>340 ns</td></tr><tr><td>Data hold after WR</td><td>88 ns</td></tr><tr><td>One wait at 5 MHz</td><td>200 ns</td></tr>
+</table>
+<h3>Figure/Table Checklist</h3>
+<table><tr><th>Figure/Table</th><th>Coverage</th></tr>
+<tr><td>Figure 9-1</td><td>8086 pin-outs in max/min mode.</td></tr>
+<tr><td>Tables 9-1 to 9-3</td><td>Input/output characteristics and fan-out.</td></tr>
+<tr><td>Table 9-4</td><td>S4/S3 segment status.</td></tr>
+<tr><td>Tables 9-5 and 9-6</td><td>Minimum/maximum bus cycle status.</td></tr>
+<tr><td>Table 9-7</td><td>Queue status.</td></tr>
+<tr><td>Figures 9-2 to 9-4</td><td>8284A pin-out, block diagram, clock/reset connection.</td></tr>
+<tr><td>Figures 9-5 to 9-8</td><td>Demultiplexed and buffered systems.</td></tr>
+<tr><td>Figures 9-9 to 9-13</td><td>Read/write timing and AC values.</td></tr>
+<tr><td>Figures 9-14 to 9-18</td><td>READY, RDY, and wait-state generation.</td></tr>
+<tr><td>Figures 9-19 to 9-21</td><td>Minimum mode, maximum mode, and 8288.</td></tr>
+</table>
+</section></div>
+<div id="flashView" class="view hidden"><section id="flashcards" class="card"><h2>Flashcards</h2><p>Click the card to show the answer. Use category filter for focused review.</p><div class="flash-tools"><select id="category"><option>All</option></select><button id="prev">Previous</button><button id="flip" class="primary">Flip</button><button id="next">Next</button><button id="shuffle">Shuffle</button></div><p><strong id="counter"></strong> <span id="catLabel"></span></p><div class="progress"><div id="fill" class="fill"></div></div><div id="flashcard" class="card flashcard"><div><div id="flashLabel" class="flash-label">Question</div><div id="flashText" class="flash-text"></div><p style="color:var(--muted)">Click card or press Flip</p></div></div></section></div>
+<div id="quizView" class="view hidden"><section id="quiz" class="card"><h2>Self-Test: Chapter 9 Questions and Answers</h2><p>Try answering first. Open each item to check.</p><div id="quizGrid"></div></section></div>
+</main></div><footer>Open this HTML file in any browser. It works offline and across devices.</footer>
+<script>
+const flashcards = [{"category": "Pin-Outs", "q": "Minimum mode IO/M-DT/R-SS0 = 000 means?", "a": "Interrupt acknowledge"}, {"category": "Pin-Outs", "q": "Minimum mode IO/M-DT/R-SS0 = 001 means?", "a": "Memory read"}, {"category": "Pin-Outs", "q": "Minimum mode IO/M-DT/R-SS0 = 010 means?", "a": "Memory write"}, {"category": "Pin-Outs", "q": "Minimum mode IO/M-DT/R-SS0 = 011 means?", "a": "Halt"}, {"category": "Pin-Outs", "q": "Minimum mode IO/M-DT/R-SS0 = 100 means?", "a": "Opcode fetch"}, {"category": "Pin-Outs", "q": "Minimum mode IO/M-DT/R-SS0 = 101 means?", "a": "I/O read"}, {"category": "Pin-Outs", "q": "Minimum mode IO/M-DT/R-SS0 = 110 means?", "a": "I/O write"}, {"category": "Pin-Outs", "q": "Minimum mode IO/M-DT/R-SS0 = 111 means?", "a": "Passive"}, {"category": "Pin-Outs", "q": "Maximum mode S2-S1-S0 = 000 means?", "a": "Interrupt acknowledge"}, {"category": "Pin-Outs", "q": "Maximum mode S2-S1-S0 = 001 means?", "a": "I/O read"}, {"category": "Pin-Outs", "q": "Maximum mode S2-S1-S0 = 010 means?", "a": "I/O write"}, {"category": "Pin-Outs", "q": "Maximum mode S2-S1-S0 = 011 means?", "a": "Halt"}, {"category": "Pin-Outs", "q": "Maximum mode S2-S1-S0 = 100 means?", "a": "Opcode fetch"}, {"category": "Pin-Outs", "q": "Maximum mode S2-S1-S0 = 101 means?", "a": "Memory read"}, {"category": "Pin-Outs", "q": "Maximum mode S2-S1-S0 = 110 means?", "a": "Memory write"}, {"category": "Pin-Outs", "q": "Maximum mode S2-S1-S0 = 111 means?", "a": "Passive"}, {"category": "Pin-Outs", "q": "QS1-QS0 = 00 means?", "a": "Queue is idle"}, {"category": "Pin-Outs", "q": "QS1-QS0 = 01 means?", "a": "First byte of opcode"}, {"category": "Pin-Outs", "q": "QS1-QS0 = 10 means?", "a": "Queue is empty"}, {"category": "Pin-Outs", "q": "QS1-QS0 = 11 means?", "a": "Subsequent byte of opcode"}, {"category": "Pin-Outs", "q": "What is the main difference between 8086 and 8088?", "a": "8086 has a 16-bit external data bus; 8088 has an 8-bit external data bus."}, {"category": "Pin-Outs", "q": "What package do both 8086 and 8088 use?", "a": "40-pin dual in-line package (DIP)."}, {"category": "Pin-Outs", "q": "What are the 8086 address/data pins?", "a": "AD0–AD15."}, {"category": "Pin-Outs", "q": "What are the 8088 address/data pins?", "a": "AD0–AD7."}, {"category": "Pin-Outs", "q": "What is pin 34 on the 8086?", "a": "BHE/S7."}, {"category": "Pin-Outs", "q": "What is pin 34 on the 8088?", "a": "SS0."}, {"category": "Pin-Outs", "q": "What memory/I/O signal does 8086 use?", "a": "M/IO."}, {"category": "Pin-Outs", "q": "What memory/I/O signal does 8088 use?", "a": "IO/M."}, {"category": "Pin-Outs", "q": "What does AD7–AD0 do on 8088?", "a": "Multiplexed address/data lines. ALE=1 address/I/O port bits; ALE=0 data."}, {"category": "Pin-Outs", "q": "What happens to AD7–AD0 during hold acknowledge?", "a": "They enter high-impedance state."}, {"category": "Pin-Outs", "q": "What does A15–A8 do on 8088?", "a": "Provides upper address bits throughout a bus cycle."}, {"category": "Pin-Outs", "q": "What happens to A15–A8 during hold acknowledge?", "a": "They enter high-impedance state."}, {"category": "Pin-Outs", "q": "What does AD15–AD8 do on 8086?", "a": "Upper multiplexed address/data bus. ALE=1 A15–A8; ALE=0 D15–D8."}, {"category": "Pin-Outs", "q": "What does A19/S6–A16/S3 do?", "a": "Provides address bits A19–A16 and status bits S6–S3."}, {"category": "Pin-Outs", "q": "What is S6?", "a": "Always logic 0."}, {"category": "Pin-Outs", "q": "What does S5 indicate?", "a": "The condition of the IF flag."}, {"category": "Pin-Outs", "q": "What do S4 and S3 indicate?", "a": "Which segment is accessed during the bus cycle."}, {"category": "Pin-Outs", "q": "S4/S3 = 00 means?", "a": "Extra segment."}, {"category": "Pin-Outs", "q": "S4/S3 = 01 means?", "a": "Stack segment."}, {"category": "Pin-Outs", "q": "S4/S3 = 10 means?", "a": "Code segment or no segment."}, {"category": "Pin-Outs", "q": "S4/S3 = 11 means?", "a": "Data segment."}, {"category": "Pin-Outs", "q": "What else can S4/S3 be decoded as?", "a": "A21 and A20 for four separate 1 MB memory banks."}, {"category": "Pin-Outs", "q": "What does RD do?", "a": "Read signal; RD=0 means data bus receives data from memory/I/O."}, {"category": "Pin-Outs", "q": "What happens to RD during hold acknowledge?", "a": "It floats to high-impedance state."}, {"category": "Pin-Outs", "q": "What does READY do?", "a": "Controls wait states. READY=0 wait; READY=1 normal."}, {"category": "Pin-Outs", "q": "What does INTR do?", "a": "Maskable interrupt request; works if IF=1."}, {"category": "Pin-Outs", "q": "What does TEST do with WAIT?", "a": "TEST=0 makes WAIT act as NOP; TEST=1 makes WAIT wait until TEST becomes 0."}, {"category": "Pin-Outs", "q": "What is NMI?", "a": "Non-maskable interrupt; does not check IF and uses vector 2."}, {"category": "Pin-Outs", "q": "What does RESET do?", "a": "Resets CPU; starts at FFFF0H and clears IF."}, {"category": "Pin-Outs", "q": "How long must RESET be held high on CPU?", "a": "At least four clock periods."}, {"category": "Pin-Outs", "q": "What CLK duty cycle is required?", "a": "33%."}, {"category": "Pin-Outs", "q": "What is VCC?", "a": "+5.0 V ±10%."}, {"category": "Pin-Outs", "q": "How many GND pins must be connected?", "a": "Two GND pins; both must be connected."}, {"category": "Pin-Outs", "q": "How is minimum mode selected?", "a": "MN/MX directly to +5 V."}, {"category": "Pin-Outs", "q": "How is maximum mode selected?", "a": "MN/MX to ground."}, {"category": "Pin-Outs", "q": "Can MN/MX use a pull-up resistor for minimum mode?", "a": "No, connect directly to +5 V."}, {"category": "Pin-Outs", "q": "What does BHE do?", "a": "Enables high data bus bits D15–D8 during read/write on 8086."}, {"category": "Pin-Outs", "q": "What is S7?", "a": "Always logic 1."}, {"category": "Pin-Outs", "q": "What does WR indicate?", "a": "CPU is outputting valid data to memory or I/O."}, {"category": "Pin-Outs", "q": "What happens to WR during hold acknowledge?", "a": "It floats to high-impedance state."}, {"category": "Pin-Outs", "q": "What does INTA do?", "a": "Interrupt acknowledge; can gate interrupt vector number onto data bus."}, {"category": "Pin-Outs", "q": "Does ALE float during hold acknowledge?", "a": "No."}, {"category": "Pin-Outs", "q": "What does DT/R mean?", "a": "Data transmit/receive. 1=transmit, 0=receive."}, {"category": "Pin-Outs", "q": "What does DEN do?", "a": "Activates external data bus buffers."}, {"category": "Pin-Outs", "q": "What does HOLD request?", "a": "Direct memory access."}, {"category": "Pin-Outs", "q": "What happens when HOLD=1?", "a": "CPU stops executing and buses go high-impedance."}, {"category": "Pin-Outs", "q": "What does HLDA indicate?", "a": "CPU has entered hold state."}, {"category": "Pin-Outs", "q": "What is SS0 used for?", "a": "Combined with IO/M and DT/R to decode current bus cycle."}, {"category": "DC Characteristics", "q": "What is the 8086 max current?", "a": "360 mA."}, {"category": "DC Characteristics", "q": "What is the 8088 max current?", "a": "340 mA."}, {"category": "DC Characteristics", "q": "What is the standard temperature range?", "a": "32°F to 180°F."}, {"category": "DC Characteristics", "q": "What are the CMOS versions?", "a": "80C86 and 80C88."}, {"category": "DC Characteristics", "q": "What is CMOS current?", "a": "About 10 mA."}, {"category": "DC Characteristics", "q": "What is CMOS temperature range?", "a": "-40°F to +225°F."}, {"category": "DC Characteristics", "q": "Input logic 0 voltage?", "a": "0.8 V maximum."}, {"category": "DC Characteristics", "q": "Input logic 1 voltage?", "a": "2.0 V minimum."}, {"category": "DC Characteristics", "q": "Input current?", "a": "±10 µA maximum."}, {"category": "DC Characteristics", "q": "Output logic 0 voltage?", "a": "0.45 V maximum."}, {"category": "DC Characteristics", "q": "Output logic 1 voltage?", "a": "2.4 V minimum."}, {"category": "DC Characteristics", "q": "Output logic 0 current?", "a": "2.0 mA maximum."}, {"category": "DC Characteristics", "q": "Output logic 1 current?", "a": "-400 µA maximum."}, {"category": "DC Characteristics", "q": "Why is noise immunity reduced?", "a": "Logic 0 output can be 0.45 V instead of 0.4 V."}, {"category": "DC Characteristics", "q": "What is reduced noise immunity?", "a": "350 mV."}, {"category": "DC Characteristics", "q": "What is fan-out?", "a": "Number of logic inputs driven by one output pin."}, {"category": "DC Characteristics", "q": "Maximum recommended fan-out without buffering?", "a": "10 unit loads."}, {"category": "DC Characteristics", "q": "Fan-out for TTL 74?", "a": "1."}, {"category": "DC Characteristics", "q": "Fan-out for TTL 74LS?", "a": "5."}, {"category": "DC Characteristics", "q": "Fan-out for TTL 74S?", "a": "1."}, {"category": "DC Characteristics", "q": "Fan-out for TTL 74ALS?", "a": "10."}, {"category": "DC Characteristics", "q": "Fan-out for TTL 74AS?", "a": "10."}, {"category": "DC Characteristics", "q": "Fan-out for TTL 74F?", "a": "10."}, {"category": "DC Characteristics", "q": "Fan-out for CMOS 74HC?", "a": "10."}, {"category": "DC Characteristics", "q": "Best logic families?", "a": "LS, 74ALS, and 74HC."}, {"category": "8284A", "q": "What is the 8284A?", "a": "Clock generator for 8086/8088 system."}, {"category": "8284A", "q": "What functions does 8284A provide?", "a": "Clock generation, RESET synchronization, READY synchronization, and PCLK."}, {"category": "8284A", "q": "What do AEN1 and AEN2 do?", "a": "Qualify RDY1 and RDY2 respectively."}, {"category": "8284A", "q": "What are RDY1 and RDY2?", "a": "Bus ready inputs used to cause wait states."}, {"category": "8284A", "q": "What does ASYNC select?", "a": "One or two READY synchronization stages."}, {"category": "8284A", "q": "ASYNC=1 means?", "a": "One synchronization stage."}, {"category": "8284A", "q": "ASYNC=0 means?", "a": "Two synchronization stages."}, {"category": "8284A", "q": "What is READY on 8284A?", "a": "Output to CPU READY input."}, {"category": "8284A", "q": "What are X1 and X2?", "a": "Crystal oscillator pins."}, {"category": "8284A", "q": "What does F/C select?", "a": "Crystal oscillator or external EFI."}, {"category": "8284A", "q": "F/C=0 means?", "a": "Use internal crystal oscillator."}, {"category": "8284A", "q": "F/C=1 means?", "a": "Use EFI external frequency input."}, {"category": "8284A", "q": "What is EFI?", "a": "External frequency input."}, {"category": "8284A", "q": "What is CLK formula?", "a": "CLK = crystal/EFI ÷ 3."}, {"category": "8284A", "q": "What is PCLK formula?", "a": "PCLK = crystal/EFI ÷ 6."}, {"category": "8284A", "q": "What is OSC formula?", "a": "OSC = same as crystal/EFI frequency."}, {"category": "8284A", "q": "CLK duty cycle?", "a": "33%."}, {"category": "8284A", "q": "PCLK duty cycle?", "a": "50%."}, {"category": "8284A", "q": "15 MHz crystal gives CLK?", "a": "5 MHz."}, {"category": "8284A", "q": "15 MHz crystal gives PCLK?", "a": "2.5 MHz."}, {"category": "8284A", "q": "14 MHz crystal gives PCLK?", "a": "About 2.33 MHz."}, {"category": "8284A", "q": "What is RES?", "a": "Active-low reset input to 8284A."}, {"category": "8284A", "q": "What level on RES resets through 8284A?", "a": "Logic 0."}, {"category": "8284A", "q": "What is RESET output?", "a": "Reset output to CPU RESET input."}, {"category": "8284A", "q": "What is CSYNC?", "a": "Clock synchronization pin; ground when using internal crystal."}, {"category": "8284A", "q": "What are reset section components?", "a": "Schmitt trigger buffer and D flip-flop."}, {"category": "8284A", "q": "Why use D flip-flop in reset?", "a": "To meet CPU RESET timing requirements."}, {"category": "8284A", "q": "8284A applies RESET on what edge?", "a": "Negative clock edge."}, {"category": "8284A", "q": "CPU samples RESET on what edge?", "a": "Positive clock edge."}, {"category": "8284A", "q": "What does RC reset circuit do?", "a": "Provides power-on reset."}, {"category": "8284A", "q": "How long must RESET be held high in reset circuit?", "a": "At least 50 µs."}, {"category": "8284A", "q": "When must RESET become logic 1 after power?", "a": "No later than four clocks after power is applied."}, {"category": "Bus", "q": "Why are buses multiplexed?", "a": "To reduce number of pins."}, {"category": "Bus", "q": "Why demultiplex buses?", "a": "Memory/I/O require stable address during read/write."}, {"category": "Bus", "q": "What are the three buses?", "a": "Address, data, and control."}, {"category": "Bus", "q": "What does address bus do?", "a": "Provides memory address or I/O port number."}, {"category": "Bus", "q": "What does data bus do?", "a": "Transfers data between CPU, memory, and I/O."}, {"category": "Bus", "q": "What does control bus do?", "a": "Provides control signals."}, {"category": "Bus", "q": "What IC is used for demultiplexing?", "a": "74LS373 or 74LS573 transparent latch."}, {"category": "Bus", "q": "How does latch work with ALE?", "a": "ALE=1 passes; ALE=0 stores address."}, {"category": "Bus", "q": "8088 demultiplexed connections?", "a": "AD7–AD0 and A19/S6–A16/S3."}, {"category": "Bus", "q": "8086 demultiplexed connections?", "a": "AD15–AD0, A19/S6–A16/S3, and BHE/S7."}, {"category": "Bus", "q": "How many latches for 8088?", "a": "Two."}, {"category": "Bus", "q": "How many latches for 8086?", "a": "Three."}, {"category": "Bus", "q": "8088 demux result?", "a": "A19–A0 address bus and D7–D0 data bus."}, {"category": "Bus", "q": "8086 demux result?", "a": "20-bit address bus, 16-bit data bus, and control bus."}, {"category": "Bus", "q": "How much memory can A19–A0 address?", "a": "1 MB."}, {"category": "Bus", "q": "What is BHE used for?", "a": "High-order memory bank selection."}, {"category": "Bus", "q": "When is buffering needed?", "a": "More than 10 unit loads."}, {"category": "Bus", "q": "Buffered logic 0 sink current?", "a": "Up to 32 mA."}, {"category": "Bus", "q": "Buffered logic 1 source current?", "a": "Up to 5.2 mA."}, {"category": "Bus", "q": "Disadvantage of buffering?", "a": "Adds timing delay."}, {"category": "Bus", "q": "Fully buffered 8088 components?", "a": "Two 74LS244, one 74LS245, two 74LS373."}, {"category": "Bus", "q": "Fully buffered 8086 components?", "a": "One 74LS244, two 74LS245, three 74LS373."}, {"category": "Bus", "q": "What controls 74LS245 direction?", "a": "DT/R."}, {"category": "Bus", "q": "What enables 74LS245?", "a": "DEN."}, {"category": "Timing", "q": "What is one bus cycle?", "a": "Four T states."}, {"category": "Timing", "q": "Normal T states?", "a": "T1, T2, T3, T4."}, {"category": "Timing", "q": "What is Tw?", "a": "Wait state between T2 and T3."}, {"category": "Timing", "q": "What happens in T1?", "a": "Address and ALE output."}, {"category": "Timing", "q": "What happens in T2?", "a": "RD/WR and DEN active; READY sampled."}, {"category": "Timing", "q": "What happens in T3?", "a": "Memory access; read data sampled."}, {"category": "Timing", "q": "What happens in T4?", "a": "Signals deactivated; write completes."}, {"category": "Timing", "q": "5 MHz clock period?", "a": "200 ns."}, {"category": "Timing", "q": "5 MHz bus cycle?", "a": "800 ns."}, {"category": "Timing", "q": "5 MHz transfer rate?", "a": "1.25 million transfers/sec."}, {"category": "Timing", "q": "5 MHz burst MIPS?", "a": "About 2.5 MIPS."}, {"category": "Timing", "q": "10 MHz burst MIPS?", "a": "About 5 MIPS."}, {"category": "Timing", "q": "4 MHz clock period?", "a": "250 ns."}, {"category": "Timing", "q": "4 MHz bus cycle?", "a": "1 µs."}, {"category": "Timing", "q": "Memory access time at 5 MHz?", "a": "460 ns."}, {"category": "Timing", "q": "Memory access time calculation?", "a": "600 ns - 110 ns - 30 ns = 460 ns."}, {"category": "Timing", "q": "Recommended memory speed at 5 MHz?", "a": "About 420 ns or faster."}, {"category": "Timing", "q": "RD strobe width at 5 MHz?", "a": "325 ns."}, {"category": "Timing", "q": "WR strobe width at 5 MHz?", "a": "340 ns."}, {"category": "Timing", "q": "Data hold after WR?", "a": "88 ns."}, {"category": "Timing", "q": "When does memory access time start?", "a": "When address appears on memory address bus."}, {"category": "Timing", "q": "When does memory access time end?", "a": "When CPU samples data at end of T3."}, {"category": "Timing", "q": "When are data written to memory?", "a": "At trailing edge of WR."}, {"category": "READY", "q": "What is READY used for?", "a": "Inserting wait states for slow memory/I/O."}, {"category": "READY", "q": "Where is Tw inserted?", "a": "Between T2 and T3."}, {"category": "READY", "q": "When is READY sampled?", "a": "End of T2 and middle of Tw."}, {"category": "READY", "q": "READY=0 at end T2 means?", "a": "Insert Tw and delay T3."}, {"category": "READY", "q": "READY=1 means?", "a": "Continue normal operation."}, {"category": "READY", "q": "One wait at 5 MHz adds?", "a": "200 ns."}, {"category": "READY", "q": "Access time with one wait at 5 MHz?", "a": "660 ns."}, {"category": "READY", "q": "If READY is grounded?", "a": "Processor keeps inserting wait states."}, {"category": "READY", "q": "RDY1 is combined with?", "a": "AEN1."}, {"category": "READY", "q": "RDY2 is combined with?", "a": "AEN2."}, {"category": "READY", "q": "AEN1/RDY1 needed levels?", "a": "Both logic 1."}, {"category": "READY", "q": "What chip can generate 0 to 7 waits?", "a": "74LS164 shift register."}, {"category": "READY", "q": "QB output gives how many waits?", "a": "One."}, {"category": "READY", "q": "QC output gives how many waits?", "a": "Two."}, {"category": "READY", "q": "When does shift register first shift?", "a": "Positive edge of T2."}, {"category": "READY", "q": "When does wait circuit generate waits?", "a": "Only when selected memory requires them."}, {"category": "Modes", "q": "What are the modes?", "a": "Minimum mode and maximum mode."}, {"category": "Modes", "q": "Minimum mode selected how?", "a": "MN/MX to +5 V."}, {"category": "Modes", "q": "Maximum mode selected how?", "a": "MN/MX to ground."}, {"category": "Modes", "q": "Which mode is least expensive?", "a": "Minimum mode."}, {"category": "Modes", "q": "Why is minimum mode cheaper?", "a": "CPU directly generates control signals."}, {"category": "Modes", "q": "Minimum mode similar to what?", "a": "Intel 8085A."}, {"category": "Modes", "q": "Maximum mode used when?", "a": "External coprocessor such as 8087 exists."}, {"category": "Modes", "q": "What controller does maximum mode require?", "a": "8288 bus controller."}, {"category": "Modes", "q": "When was maximum mode dropped?", "a": "Starting with 80286."}, {"category": "8288", "q": "Main function of 8288?", "a": "Generate/reconstruct bus control signals in maximum mode."}, {"category": "8288", "q": "What inputs does 8288 decode?", "a": "S2, S1, S0."}, {"category": "8288", "q": "8288 CLK connects to?", "a": "8284A CLK output."}, {"category": "8288", "q": "8288 ALE function?", "a": "Address latch enable output."}, {"category": "8288", "q": "8288 DEN function?", "a": "Active-high data bus enable."}, {"category": "8288", "q": "How is 8288 DEN different?", "a": "Opposite polarity from minimum-mode microprocessor DEN."}, {"category": "8288", "q": "8288 DT/R function?", "a": "Controls direction of bidirectional buffers."}, {"category": "8288", "q": "AEN function?", "a": "Enables memory control signals."}, {"category": "8288", "q": "CEN function?", "a": "Enables command output pins."}, {"category": "8288", "q": "IOB function?", "a": "Selects I/O bus mode or system bus mode."}, {"category": "8288", "q": "IORC?", "a": "I/O read command."}, {"category": "8288", "q": "IOWC?", "a": "I/O write command."}, {"category": "8288", "q": "MRDC?", "a": "Memory read command."}, {"category": "8288", "q": "MWTC?", "a": "Memory write command."}, {"category": "8288", "q": "AIOWC?", "a": "Advanced I/O write command."}, {"category": "8288", "q": "AMWC?", "a": "Advanced memory write command."}, {"category": "8288", "q": "INTA?", "a": "Interrupt acknowledge output."}, {"category": "8288", "q": "MCE/PDEN?", "a": "Cascade operation if IOB grounded; enables I/O bus transceivers if IOB high."}];
+const quizItems = [["1. List the differences between the 8086 and 8088.", "8086: 16-bit external data bus, AD0–AD15, BHE/S7, M/IO. 8088: 8-bit external data bus, AD0–AD7, SS0, IO/M."], ["2. Is the 8086/8088 TTL-compatible?", "Yes, but noise immunity is derated to 350 mV because logic 0 output can be 0.45 V."], ["3. What is the fan-out to 74XXX, 74ALSXXX, and 74HCXXX?", "74XXX = 1, 74ALSXXX = 10, 74HCXXX = 10."], ["4. What appears on the 8088 address/data bus while ALE is active?", "Address information or I/O port number bits."], ["5. What are the purposes of S3 and S4?", "They show which segment is accessed during the bus cycle."], ["6. What does logic 0 on RD indicate?", "A read operation; data bus receives data from memory or I/O."], ["7. Explain TEST and WAIT.", "WAIT checks TEST. TEST=0 makes WAIT act like NOP; TEST=1 makes WAIT wait until TEST becomes 0."], ["8. Describe CLK.", "Basic timing signal with 33% duty cycle."], ["9. What mode is selected when MN/MX is grounded?", "Maximum mode."], ["10. What does WR strobe indicate?", "The CPU is outputting valid data to memory or I/O."], ["11. When does ALE float?", "ALE does not float during hold acknowledge."], ["12. When DT/R is logic 1, what condition is indicated?", "The data bus is transmitting."], ["13. What happens when HOLD is logic 1?", "CPU stops software execution and places address, data, and control buses in high-impedance state."], ["14. What three minimum-mode pins decode halted state?", "IO/M, DT/R, and SS0. 0-1-1 indicates halt."], ["15. Explain LOCK.", "Locks peripherals off the system; activated by LOCK prefix."], ["16. What do QS1 and QS0 indicate?", "Queue status: 00 idle, 01 first opcode byte, 10 empty, 11 subsequent opcode byte."], ["17. What housekeeping chores are provided by 8284A?", "Clock generation, RESET synchronization, READY synchronization; plus PCLK."], ["18. By what factor does 8284A divide crystal for CLK?", "By 3."], ["19. If F/C is logic 1, where is timing input attached?", "EFI."], ["20. PCLK for 14 MHz crystal?", "14/6 = 2.33 MHz."], ["21. RES logic level for reset?", "Logic 0, because RES is active-low."], ["22. Which 8086 bus connections are demultiplexed?", "AD15–AD0, A19/S6–A16/S3, and BHE/S7."], ["23. Which 8088 bus connections are demultiplexed?", "AD7–AD0 and A19/S6–A16/S3."], ["24. Which TTL IC is used for demultiplexing?", "74LS373 or 74LS573."], ["25. Purpose of demultiplexed BHE?", "High-order memory bank selection / enables D15–D8."], ["26. Why are buffers required?", "To drive more than 10 unit loads or large buses."], ["27. What signal selects 74LS245 direction?", "DT/R."], ["28. A bus cycle equals how many clock periods?", "Four."], ["29. If CLK is 4 MHz, how long is one bus cycle?", "1 µs."], ["30. What operations occur during a bus cycle?", "Read or write between CPU and memory/I/O."], ["31. How many MIPS at 10 MHz?", "About 5 MIPS in bursts."], ["32. Describe T1, T2, T3, T4, Tw.", "T1 address/ALE; T2 RD/WR/DEN/READY; T3 memory access/data sample; T4 deactivation/write completion; Tw wait state."], ["33. Memory access time at 5 MHz?", "460 ns."], ["34. RD width at 5 MHz?", "325 ns."], ["35. If READY is grounded?", "Wait states are continuously inserted."], ["36. What does ASYNC do?", "Selects one or two stages of READY synchronization."], ["37. AEN1 and RDY1 levels for ready path?", "Both must be logic 1."], ["38. Contrast minimum and maximum mode.", "Minimum: simple, CPU control signals, no 8288. Maximum: coprocessor systems, 8288 generates controls."], ["39. Main function of 8288?", "Provides/reconstructs bus control signals in maximum mode."]];
+const themeBtn=document.getElementById('themeBtn'); const saved=localStorage.getItem('c9theme')||'light'; document.body.dataset.theme=saved; themeBtn.textContent=saved==='dark'?'Light Mode':'Dark Mode'; themeBtn.onclick=()=>{const n=document.body.dataset.theme==='dark'?'light':'dark';document.body.dataset.theme=n;localStorage.setItem('c9theme',n);themeBtn.textContent=n==='dark'?'Light Mode':'Dark Mode';};
+document.querySelectorAll('.tab').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));btn.classList.add('active');document.getElementById(btn.dataset.view).classList.remove('hidden');});
+document.querySelectorAll('a[href="#flashcards"]').forEach(a=>a.onclick=e=>{e.preventDefault();document.querySelector('[data-view="flashView"]').click();document.getElementById('flashcards').scrollIntoView({behavior:'smooth'});});
+document.querySelectorAll('a[href="#quiz"]').forEach(a=>a.onclick=e=>{e.preventDefault();document.querySelector('[data-view="quizView"]').click();document.getElementById('quiz').scrollIntoView({behavior:'smooth'});});
+const sections=[...document.querySelectorAll('.searchable')]; const originals=new Map(sections.map(s=>[s,s.innerHTML])); const search=document.getElementById('searchInput'); function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}; search.oninput=()=>{const q=search.value.trim(); sections.forEach(s=>{s.innerHTML=originals.get(s); if(!q){s.classList.remove('hidden');return} const ok=s.textContent.toLowerCase().includes(q.toLowerCase()); s.classList.toggle('hidden',!ok); if(ok) s.innerHTML=s.innerHTML.replace(new RegExp('('+esc(q)+')','gi'),'<mark>$1</mark>');})}; document.getElementById('clearSearch').onclick=()=>{search.value='';sections.forEach(s=>{s.innerHTML=originals.get(s);s.classList.remove('hidden')})};
+const cat=document.getElementById('category'); 
+[...new Set(flashcards.map(c=>c.category))].sort().forEach(c=>{const o=document.createElement('option');o.textContent=c;cat.appendChild(o)});
+
+const CARD_STATE_KEY='chapter9_recent_flashcard_state';
+let active=[...flashcards], idx=0, ans=false;
+const fc=document.getElementById('flashcard'),
+      label=document.getElementById('flashLabel'),
+      text=document.getElementById('flashText'),
+      counter=document.getElementById('counter'),
+      catLabel=document.getElementById('catLabel'),
+      fill=document.getElementById('fill');
+
+const savedStatus=document.createElement('span');
+savedStatus.id='savedStatus';
+savedStatus.style.color='var(--muted)';
+savedStatus.style.fontSize='0.9rem';
+savedStatus.style.marginLeft='8px';
+counter.parentElement.appendChild(savedStatus);
+
+function getSavedCardState(){
+  try{return JSON.parse(localStorage.getItem(CARD_STATE_KEY)||'null')}
+  catch(e){return null}
+}
+
+function saveCardState(){
+  if(!active.length) return;
+  const c=active[idx];
+  localStorage.setItem(CARD_STATE_KEY, JSON.stringify({
+    category: cat.value,
+    question: c.q,
+    answerShown: ans,
+    savedAt: new Date().toISOString()
+  }));
+  savedStatus.textContent=' • saved';
+}
+
+function rebuildActive(){
+  active = cat.value==='All' ? [...flashcards] : flashcards.filter(c=>c.category===cat.value);
+  if(!active.length){active=[...flashcards]; cat.value='All';}
+}
+
+function restoreCardState(){
+  const saved=getSavedCardState();
+  if(!saved) return;
+  if(saved.category && [...cat.options].some(o=>o.value===saved.category || o.textContent===saved.category)){
+    cat.value=saved.category;
+  }
+  rebuildActive();
+  const found=active.findIndex(c=>c.q===saved.question);
+  if(found>=0) idx=found;
+  ans=!!saved.answerShown;
+}
+
+function render(){
+  const c=active[idx];
+  label.textContent=ans?'Answer':'Question';
+  text.textContent=ans?c.a:c.q;
+  counter.textContent=`Card ${idx+1} of ${active.length}`;
+  catLabel.textContent=' — '+c.category;
+  fill.style.width=((idx+1)/active.length*100)+'%';
+  saveCardState();
+}
+
+cat.onchange=()=>{
+  rebuildActive();
+  idx=0;
+  ans=false;
+  render();
+};
+
+fc.onclick=()=>{ans=!ans;render()};
+document.getElementById('flip').onclick=fc.onclick;
+document.getElementById('next').onclick=()=>{idx=(idx+1)%active.length;ans=false;render()};
+document.getElementById('prev').onclick=()=>{idx=(idx-1+active.length)%active.length;ans=false;render()};
+document.getElementById('shuffle').onclick=()=>{
+  for(let i=active.length-1;i>0;i--){
+    let j=Math.floor(Math.random()*(i+1));
+    [active[i],active[j]]=[active[j],active[i]];
+  }
+  idx=0;
+  ans=false;
+  render();
+};
+
+window.addEventListener('beforeunload', saveCardState);
+document.addEventListener('visibilitychange', ()=>{if(document.visibilityState==='hidden') saveCardState();});
+
+restoreCardState();
+render();
+const qg=document.getElementById('quizGrid'); quizItems.forEach((it,i)=>{const d=document.createElement('details'); d.className='card'; d.style.boxShadow='none'; d.innerHTML=`<summary>${it[0]}</summary><p>${it[1]}</p>`; qg.appendChild(d);});
+document.addEventListener('keydown',e=>{if(document.getElementById('flashView').classList.contains('hidden'))return; if(e.key==='ArrowRight')document.getElementById('next').click(); if(e.key==='ArrowLeft')document.getElementById('prev').click(); if(e.key===' '||e.key==='Enter'){e.preventDefault();document.getElementById('flip').click();}});
+</script></body></html>
